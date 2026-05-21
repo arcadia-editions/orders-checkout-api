@@ -1,0 +1,177 @@
+asyncapi: 3.0.0
+info:
+  title: "Arcadia Editions - Orders Checkout"
+  version: 0.0.1
+  tags:
+    - name: "Default"
+    - name: "OrdersCheckout"
+
+defaultContentType: application/json
+
+channels:
+  PaymentAuthorizedEventsChannel:
+    address: "payments.events.payment-authorized"
+    messages:
+      ConfirmOrderInputMessage:
+        $ref: '#/components/messages/ConfirmOrderInputMessage'
+  StockReleasedEventsChannel:
+    address: "catalog.events.stock-released"
+    messages:
+      CancelOrderInputMessage:
+        $ref: '#/components/messages/CancelOrderInputMessage'
+  OrderCreatedEventsChannel:
+    address: "orders.events.order-created"
+    messages:
+      OrderCreatedMessage:
+        $ref: '#/components/messages/OrderCreatedMessage'
+  StockUnavailableEventsChannel:
+    address: "orders.events.stock-unavailable"
+    messages:
+      StockUnavailableMessage:
+        $ref: '#/components/messages/StockUnavailableMessage'
+  OrderConfirmedEventsChannel:
+    address: "orders.events.order-confirmed"
+    messages:
+      OrderConfirmedMessage:
+        $ref: '#/components/messages/OrderConfirmedMessage'
+  OrderCancelledEventsChannel:
+    address: "orders.events.order-cancelled"
+    messages:
+      OrderCancelledMessage:
+        $ref: '#/components/messages/OrderCancelledMessage'
+
+operations:
+  doConfirmOrder:
+    action: receive
+    tags:
+      - name: OrdersCheckout
+    channel:
+      $ref: '#/channels/PaymentAuthorizedEventsChannel'
+  doCancelOrder:
+    action: receive
+    tags:
+      - name: OrdersCheckout
+    channel:
+      $ref: '#/channels/StockReleasedEventsChannel'
+  onOrderCreated:
+    action: send
+    tags:
+      - name: OrdersCheckout
+    channel:
+      $ref: '#/channels/OrderCreatedEventsChannel'
+  onStockUnavailable:
+    action: send
+    tags:
+      - name: OrdersCheckout
+    channel:
+      $ref: '#/channels/StockUnavailableEventsChannel'
+  onOrderConfirmed:
+    action: send
+    tags:
+      - name: OrdersCheckout
+    channel:
+      $ref: '#/channels/OrderConfirmedEventsChannel'
+  onOrderCancelled:
+    action: send
+    tags:
+      - name: OrdersCheckout
+    channel:
+      $ref: '#/channels/OrderCancelledEventsChannel'
+
+
+components:
+  messages:
+    ConfirmOrderInputMessage:
+      name: ConfirmOrderInputMessage
+      title: ""
+      summary: ""
+      traits:
+        - $ref: '#/components/messageTraits/CommonHeaders'
+      payload:
+        schemaFormat: application/vnd.apache.avro+json;version=1.9.0
+        schema:
+          $ref: "avro/ConfirmOrderInput.avsc"
+    CancelOrderInputMessage:
+      name: CancelOrderInputMessage
+      title: ""
+      summary: ""
+      traits:
+        - $ref: '#/components/messageTraits/CommonHeaders'
+      payload:
+        schemaFormat: application/vnd.apache.avro+json;version=1.9.0
+        schema:
+          $ref: "avro/CancelOrderInput.avsc"
+    OrderCreatedMessage:
+      name: OrderCreatedMessage
+      title: ""
+      summary: ""
+      traits:
+        - $ref: '#/components/messageTraits/CommonHeaders'
+      payload:
+        schemaFormat: application/vnd.apache.avro+json;version=1.9.0
+        schema:
+          $ref: "avro/OrderCreated.avsc"
+    StockUnavailableMessage:
+      name: StockUnavailableMessage
+      title: ""
+      summary: ""
+      traits:
+        - $ref: '#/components/messageTraits/CommonHeaders'
+      payload:
+        schemaFormat: application/vnd.apache.avro+json;version=1.9.0
+        schema:
+          $ref: "avro/StockUnavailable.avsc"
+    OrderConfirmedMessage:
+      name: OrderConfirmedMessage
+      title: ""
+      summary: ""
+      traits:
+        - $ref: '#/components/messageTraits/CommonHeaders'
+      payload:
+        schemaFormat: application/vnd.apache.avro+json;version=1.9.0
+        schema:
+          $ref: "avro/OrderConfirmed.avsc"
+    OrderCancelledMessage:
+      name: OrderCancelledMessage
+      title: ""
+      summary: ""
+      traits:
+        - $ref: '#/components/messageTraits/CommonHeaders'
+      payload:
+        schemaFormat: application/vnd.apache.avro+json;version=1.9.0
+        schema:
+          $ref: "avro/OrderCancelled.avsc"
+
+  messageTraits:
+    CommonHeaders:
+      headers:
+        type: object
+        properties:
+          kafka_messageKey:
+            type: "integer"
+            format: "int64"
+            description: This header value will be populated automatically at runtime
+            x-runtime-expression: $message.payload#/id
+          # CloudEvents Attributes
+          ce-id:
+            type: string
+            description: Unique identifier for the event
+            x-runtime-expression: $message.payload#{#this.id}
+          ce-source:
+            type: string
+            description: URI identifying the context where event happened
+            x-runtime-expression: $message.payload#{"OrdersCheckout"}
+          ce-specversion:
+            type: string
+            description: CloudEvents specification version
+            x-runtime-expression: $message.payload#{"1.0"}
+          ce-type:
+            type: string
+            description: Event type
+            x-runtime-expression: $message.payload#{#this.getClass().getSimpleName()}
+          ce-time:
+            type: string
+            description: Timestamp of when the event happened
+            x-runtime-expression: $message.payload#{T(java.time.Instant).now().toString()}
+
+
