@@ -1,4 +1,5 @@
 config {
+    id "urn:com.arcadiaeditions.orders.checkout"
     title "Arcadia Editions - Orders Checkout"
     basePackage "com.arcadiaeditions.orders.checkout"
 
@@ -13,6 +14,11 @@ config {
             includeKafkaCommonHeaders true
             targetFile "./asyncapi.yml"
         }
+        ZDLToAsyncAPIClientPlugin {
+            id "urn:com.arcadiaeditions.orders.checkout:client"
+            title "Arcadia Editions - Orders Checkout - AsyncAPI Client"
+            targetFile "./asyncapi-client.yml"
+        }
         /** Generates an OpenAPI 3.0 specification from this ZDL model. */
         ZDLToOpenAPIPlugin {
             idType integer
@@ -20,6 +26,11 @@ config {
             targetFile "./openapi.yml"
         }
     }
+}
+
+apis {
+    asyncapi client PaymentsProcessingApi "https://raw.githubusercontent.com/arcadia-editions/payments-processing-api/main/asyncapi.yml"
+    asyncapi client CatalogInventoryApi "https://raw.githubusercontent.com/arcadia-editions/catalog-inventory-api/main/asyncapi.yml"
 }
 
 @aggregate
@@ -58,35 +69,35 @@ service OrdersCheckoutService for (Order) {
     @transition(to: CREATED)
     startOrderCheckout(StartOrderCheckoutInput) Order withEvents [OrderCreated | StockUnavailable]
 
-    @asyncapi({ channel: "PaymentAuthorizedEventsChannel", topic: "payments.events.payment-authorized" })
+    @asyncapi(api: PaymentsProcessingApi, channel: PaymentAuthorizedChannel)
     @transition(from: CREATED, to: CONFIRMED)
     confirmOrder(ConfirmOrderInput) Order withEvents OrderConfirmed
 
-    @asyncapi({ channel: "StockReleasedEventsChannel", topic: "catalog.events.stock-released" })
+    @asyncapi(api: CatalogInventoryApi, channel: StockReleasedChannel)
     @transition(from: [CREATED, CONFIRMED], to: CANCELLED)
     cancelOrder(CancelOrderInput) Order withEvents OrderCancelled
 }
 
-@asyncapi({ channel: "OrderCreatedEventsChannel", topic: "orders.events.order-created" })
+@asyncapi({ channel: "OrderCreatedChannel", topic: "orders.events.order-created" })
 event OrderCreated {
     orderId String
     version Integer
 }
 
-@asyncapi({ channel: "StockUnavailableEventsChannel", topic: "orders.events.stock-unavailable" })
+@asyncapi({ channel: "StockUnavailableChannel", topic: "orders.events.stock-unavailable" })
 event StockUnavailable {
     productId String
     requestedQuantity Integer
 }
 
-@asyncapi({ channel: "OrderConfirmedEventsChannel", topic: "orders.events.order-confirmed" })
+@asyncapi({ channel: "OrderConfirmedChannel", topic: "orders.events.order-confirmed" })
 event OrderConfirmed {
     orderId String
     version Integer
     confirmedAt Instant
 }
 
-@asyncapi({ channel: "OrderCancelledEventsChannel", topic: "orders.events.order-cancelled" })
+@asyncapi({ channel: "OrderCancelledChannel", topic: "orders.events.order-cancelled" })
 event OrderCancelled {
     orderId String
     version Integer
