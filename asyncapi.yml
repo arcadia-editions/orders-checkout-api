@@ -1,4 +1,5 @@
 asyncapi: 3.0.0
+id: urn:com.arcadiaeditions:orders:checkout:asyncapi
 info:
   title: "Arcadia Editions - Orders Checkout"
   version: 0.0.1
@@ -9,98 +10,56 @@ info:
 defaultContentType: application/json
 
 channels:
-  PaymentAuthorizedEventsChannel:
-    address: "payments.events.payment-authorized"
-    messages:
-      ConfirmOrderInputMessage:
-        $ref: '#/components/messages/ConfirmOrderInputMessage'
-  StockReleasedEventsChannel:
-    address: "catalog.events.stock-released"
-    messages:
-      CancelOrderInputMessage:
-        $ref: '#/components/messages/CancelOrderInputMessage'
-  OrderCreatedEventsChannel:
-    address: "orders.events.order-created"
+  order-created-event-v1:
+    address: "orders-checkout.order-created.event.avro.v1"
     messages:
       OrderCreatedMessage:
         $ref: '#/components/messages/OrderCreatedMessage'
-  StockUnavailableEventsChannel:
-    address: "orders.events.stock-unavailable"
+  stock-unavailable-event-v1:
+    address: "orders-checkout.stock-unavailable.event.avro.v1"
     messages:
       StockUnavailableMessage:
         $ref: '#/components/messages/StockUnavailableMessage'
-  OrderConfirmedEventsChannel:
-    address: "orders.events.order-confirmed"
+  order-confirmed-event-v1:
+    address: "orders-checkout.order-confirmed.event.avro.v1"
     messages:
       OrderConfirmedMessage:
         $ref: '#/components/messages/OrderConfirmedMessage'
-  OrderCancelledEventsChannel:
-    address: "orders.events.order-cancelled"
+  order-cancelled-event-v1:
+    address: "orders-checkout.order-cancelled.event.avro.v1"
     messages:
       OrderCancelledMessage:
         $ref: '#/components/messages/OrderCancelledMessage'
 
 operations:
-  doConfirmOrder:
-    action: receive
-    tags:
-      - name: OrdersCheckout
-    channel:
-      $ref: '#/channels/PaymentAuthorizedEventsChannel'
-  doCancelOrder:
-    action: receive
-    tags:
-      - name: OrdersCheckout
-    channel:
-      $ref: '#/channels/StockReleasedEventsChannel'
   onOrderCreated:
     action: send
     tags:
       - name: OrdersCheckout
     channel:
-      $ref: '#/channels/OrderCreatedEventsChannel'
+      $ref: '#/channels/order-created-event-v1'
   onStockUnavailable:
     action: send
     tags:
       - name: OrdersCheckout
     channel:
-      $ref: '#/channels/StockUnavailableEventsChannel'
+      $ref: '#/channels/stock-unavailable-event-v1'
   onOrderConfirmed:
     action: send
     tags:
       - name: OrdersCheckout
     channel:
-      $ref: '#/channels/OrderConfirmedEventsChannel'
+      $ref: '#/channels/order-confirmed-event-v1'
   onOrderCancelled:
     action: send
     tags:
       - name: OrdersCheckout
     channel:
-      $ref: '#/channels/OrderCancelledEventsChannel'
+      $ref: '#/channels/order-cancelled-event-v1'
 
 
 components:
   messages:
-    ConfirmOrderInputMessage:
-      name: ConfirmOrderInputMessage
-      title: ""
-      summary: ""
-      traits:
-        - $ref: '#/components/messageTraits/CommonHeaders'
-      payload:
-        schemaFormat: application/vnd.apache.avro+json;version=1.9.0
-        schema:
-          $ref: "avro/ConfirmOrderInput.avsc"
-    CancelOrderInputMessage:
-      name: CancelOrderInputMessage
-      title: ""
-      summary: ""
-      traits:
-        - $ref: '#/components/messageTraits/CommonHeaders'
-      payload:
-        schemaFormat: application/vnd.apache.avro+json;version=1.9.0
-        schema:
-          $ref: "avro/CancelOrderInput.avsc"
     OrderCreatedMessage:
       name: OrderCreatedMessage
       title: ""
@@ -173,5 +132,4 @@ components:
             type: string
             description: Timestamp of when the event happened
             x-runtime-expression: $message.payload#{T(java.time.Instant).now().toString()}
-
 
