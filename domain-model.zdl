@@ -7,17 +7,31 @@ config {
         /** Generates an AsyncAPI v3 specification from this ZDL model. */
         ZDLToAsyncAPIPlugin {
             id "urn:com.arcadiaeditions:orders:checkout:asyncapi"
+            applicationExtensions """
+            x-application-bindings:
+              x-principal: orders_checkout
+              x-clientId: orders_checkout
+              x-groupId: orders_checkout
+            """
             schemaFormat avro
             idType integer
             idTypeFormat int64
             avroPackage com.arcadiaeditions.orders.checkout.events.avro
             includeCloudEventsHeaders true
             includeKafkaCommonHeaders true
+            asyncapiOverlayFiles "https://raw.githubusercontent.com/arcadia-editions/api-contract-commons/refs/heads/main/asyncapi-overlay.yml"
             targetFile "./asyncapi.yml"
         }
         ZDLToAsyncAPIClientPlugin {
             id "urn:com.arcadiaeditions:orders:checkout:asyncapi:client"
+            applicationExtensions """
+            x-application-bindings:
+              x-principal: orders_checkout
+              x-clientId: orders_checkout
+              x-groupId: orders_checkout
+            """
             title "Arcadia Editions - Orders Checkout - AsyncAPI Client"
+            asyncapiOverlayFiles "https://raw.githubusercontent.com/arcadia-editions/api-contract-commons/refs/heads/main/asyncapi-client-overlay.yml"
             targetFile "./asyncapi-client.yml"
         }
         /** Generates an OpenAPI 3.0 specification from this ZDL model. */
