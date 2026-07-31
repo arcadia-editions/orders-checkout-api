@@ -22,39 +22,43 @@ defaultContentType: application/json
 channels:
   order-created-event-v1:
     address: orders-checkout.order-created.event.avro.v1
+    x-visibility: global
     messages:
-      OrderCreatedMessage:
+      OrderCreatedEvent:
         $ref: "#/components/messages/OrderCreatedMessage"
     x-traits:
     - $ref: https://raw.githubusercontent.com/arcadia-editions/api-contract-commons/refs/heads/main/asyncapi-channel-traits.yml#/components/channelTraits/kafkaTopicS
     - $ref: https://raw.githubusercontent.com/arcadia-editions/api-contract-commons/refs/heads/main/asyncapi-channel-traits.yml#/components/channelTraits/kafkaTopicRetained
   stock-unavailable-event-v1:
     address: orders-checkout.stock-unavailable.event.avro.v1
+    x-visibility: global
     messages:
-      StockUnavailableMessage:
+      StockUnavailableEvent:
         $ref: "#/components/messages/StockUnavailableMessage"
     x-traits:
     - $ref: https://raw.githubusercontent.com/arcadia-editions/api-contract-commons/refs/heads/main/asyncapi-channel-traits.yml#/components/channelTraits/kafkaTopicS
     - $ref: https://raw.githubusercontent.com/arcadia-editions/api-contract-commons/refs/heads/main/asyncapi-channel-traits.yml#/components/channelTraits/kafkaTopicRetained
   order-confirmed-event-v1:
     address: orders-checkout.order-confirmed.event.avro.v1
+    x-visibility: global
     messages:
-      OrderConfirmedMessage:
+      OrderConfirmedEvent:
         $ref: "#/components/messages/OrderConfirmedMessage"
     x-traits:
     - $ref: https://raw.githubusercontent.com/arcadia-editions/api-contract-commons/refs/heads/main/asyncapi-channel-traits.yml#/components/channelTraits/kafkaTopicS
     - $ref: https://raw.githubusercontent.com/arcadia-editions/api-contract-commons/refs/heads/main/asyncapi-channel-traits.yml#/components/channelTraits/kafkaTopicRetained
   order-cancelled-event-v1:
     address: orders-checkout.order-cancelled.event.avro.v1
+    x-visibility: global
     messages:
-      OrderCancelledMessage:
+      OrderCancelledEvent:
         $ref: "#/components/messages/OrderCancelledMessage"
     x-traits:
     - $ref: https://raw.githubusercontent.com/arcadia-editions/api-contract-commons/refs/heads/main/asyncapi-channel-traits.yml#/components/channelTraits/kafkaTopicS
     - $ref: https://raw.githubusercontent.com/arcadia-editions/api-contract-commons/refs/heads/main/asyncapi-channel-traits.yml#/components/channelTraits/kafkaTopicRetained
 
 operations:
-  onOrderCreated:
+  onOrderCreatedEvent:
     action: send
     tags:
     - name: OrdersCheckout
@@ -62,7 +66,7 @@ operations:
       $ref: "#/channels/order-created-event-v1"
     traits:
     - $ref: "#/components/operationTraits/clientIdAndPrincipal"
-  onStockUnavailable:
+  onStockUnavailableEvent:
     action: send
     tags:
     - name: OrdersCheckout
@@ -70,7 +74,7 @@ operations:
       $ref: "#/channels/stock-unavailable-event-v1"
     traits:
     - $ref: "#/components/operationTraits/clientIdAndPrincipal"
-  onOrderConfirmed:
+  onOrderConfirmedEvent:
     action: send
     tags:
     - name: OrdersCheckout
@@ -78,7 +82,7 @@ operations:
       $ref: "#/channels/order-confirmed-event-v1"
     traits:
     - $ref: "#/components/operationTraits/clientIdAndPrincipal"
-  onOrderCancelled:
+  onOrderCancelledEvent:
     action: send
     tags:
     - name: OrdersCheckout

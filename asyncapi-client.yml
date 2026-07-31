@@ -3,7 +3,7 @@ id: urn:com.arcadiaeditions:orders:checkout:asyncapi:client
 
 info:
   title: Arcadia Editions - Orders Checkout - AsyncAPI Client
-  version: 1.0.0
+  version: 0.0.1
   description: Consumed AsyncAPI channels for Arcadia Editions - Orders Checkout.
 
 x-application-bindings:
@@ -18,13 +18,13 @@ channels:
     $ref: https://raw.githubusercontent.com/arcadia-editions/catalog-inventory-api/main/asyncapi.yml#/channels/stock-released-event-v1
 
 operations:
-  onPaymentAuthorizedEventV1:
+  onPaymentAuthorizedEvent:
     action: receive
     channel:
       $ref: "#/channels/payment-authorized-event-v1"
     traits:
     - $ref: "#/components/operationTraits/clientIdAndPrincipal"
-  onStockReleasedEventV1:
+  onStockReleasedEvent:
     action: receive
     channel:
       $ref: "#/channels/stock-released-event-v1"

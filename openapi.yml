@@ -68,7 +68,7 @@ components:
           readOnly: true
         version:
           type: "integer"
-          default: "null"
+          nullable: true
           description: "Version of the document (required in PUT for concurrency control,\
             \ should be null in POSTs)."
         orderId:
@@ -95,57 +95,6 @@ components:
       - "CREATED"
       - "CONFIRMED"
       - "CANCELLED"
-
-    Page:
-      type: object
-      required:
-        - "content"
-        - "totalElements"
-        - "totalPages"
-        - "size"
-        - "number"
-      properties:
-        number:
-          type: integer
-          minimum: 0
-        numberOfElements:
-          type: integer
-          minimum: 0
-        size:
-          type: integer
-          minimum: 0
-          maximum: 200
-          multipleOf: 25
-        totalElements:
-          type: integer
-        totalPages:
-          type: integer
-
-  parameters:
-    page:
-      name: page
-      in: query
-      description: The number of results page
-      schema:
-        type: integer
-        format: int32
-        default: 0
-    limit:
-      name: limit
-      in: query
-      description: The number of results in a single page
-      schema:
-        type: integer
-        format: int32
-        default: 20
-    sort:
-      name: sort
-      in: query
-      description: Sort results by field name and direction (asc or desc)
-      schema:
-        type: array
-        items:
-          type: string
 
   securitySchemes:
     basicAuth:     # <-- arbitrary name for the security scheme
