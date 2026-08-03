@@ -37,7 +37,7 @@ jobs:
       version: ${{ inputs.version }}
       development_version: ${{ inputs['development-version'] }}
       default_branch: main
-      architecture_repository: arcadia-editions/arcadia-editions-docs
+      architecture_repository: arcadia-editions/arcadia-editions-architecture
       architecture_ref: main
       architecture_manifest_path: zenwave-architecture.yml
     secrets:

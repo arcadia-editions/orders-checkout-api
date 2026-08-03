@@ -58,7 +58,7 @@ jobs:
     with:
       workflow_ref: main
       service_repository: orders-checkout-api
-      architecture_repository: arcadia-editions/arcadia-editions-docs
+      architecture_repository: arcadia-editions/arcadia-editions-architecture
       architecture_ref: main
       architecture_manifest_path: zenwave-architecture.yml
       base_sha: ${{ github.event.pull_request.base.sha || github.event.before || '' }}
@@ -80,7 +80,7 @@ jobs:
       plan: ${{ github.event_name == 'workflow_dispatch' && format('[{{"type":"{0}","changedFiles":[]}}]', inputs.artifact) || needs.ci.outputs.publication_plan }}
       source_sha: ${{ github.sha }}
       default_branch: main
-      architecture_repository: arcadia-editions/arcadia-editions-docs
+      architecture_repository: arcadia-editions/arcadia-editions-architecture
       architecture_ref: main
       architecture_manifest_path: zenwave-architecture.yml
     secrets:
