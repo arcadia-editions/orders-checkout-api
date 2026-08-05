@@ -1,5 +1,6 @@
 config {
     id "urn:com.arcadiaeditions:orders:checkout"
+    version "0.1.0"
     title "Arcadia Editions - Orders Checkout"
     basePackage "com.arcadiaeditions.orders.checkout"
 

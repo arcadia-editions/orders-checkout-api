@@ -1,23 +1,18 @@
-name: Release one API artifact family
+name: Release one API-first artifact
 
 on:
   workflow_dispatch:
     inputs:
       artifact:
-        description: Single artifact family to release.
-        required: true
-        type: choice
-        options:
-          - zdl
-          - openapi
-          - asyncapi
-          - api-product
-      version:
-        description: Release version without v or an artifact prefix.
+        description: Resolved artifactId from the architecture manifest.
         required: true
         type: string
-      development-version:
-        description: Explicit next development version ending in -SNAPSHOT.
+      version:
+        description: Release version without a v prefix.
+        required: true
+        type: string
+      nextVersion:
+        description: Next development version ending in -SNAPSHOT.
         required: true
         type: string
 
@@ -32,14 +27,12 @@ jobs:
     uses: arcadia-editions/api-product-workflows/.github/workflows/artifact-release.yml@main
     with:
       workflow_ref: main
-      service_repository: orders-checkout-api
       artifact: ${{ inputs.artifact }}
       version: ${{ inputs.version }}
-      development_version: ${{ inputs['development-version'] }}
+      next_version: ${{ inputs.nextVersion }}
       default_branch: main
+      architecture_manifest_uri: https://raw.githubusercontent.com/arcadia-editions/arcadia-editions-architecture/main/zenwave-architecture.yml
       architecture_repository: arcadia-editions/arcadia-editions-architecture
-      architecture_ref: main
-      architecture_manifest_path: zenwave-architecture.yml
     secrets:
       checkout_token: ${{ secrets.ARTIFACT_WORKFLOWS_CHECKOUT_TOKEN }}
       release_token: ${{ secrets.ARTIFACT_RELEASE_TOKEN }}
@@ -48,3 +41,5 @@ jobs:
       maven_password_or_token: ${{ secrets.MAVEN_REPOSITORY_PASSWORD_OR_TOKEN }}
       apicurio_username: ${{ secrets.APICURIO_USERNAME }}
       apicurio_password_or_token: ${{ secrets.APICURIO_PASSWORD_OR_TOKEN }}
+      artifactory_username: ${{ secrets.ARTIFACTORY_USERNAME }}
+      artifactory_password_or_token: ${{ secrets.ARTIFACTORY_PASSWORD_OR_TOKEN }}
