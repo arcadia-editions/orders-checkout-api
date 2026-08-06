@@ -27,6 +27,7 @@ paths:
   /orders:
     post:
       operationId: startOrderCheckout
+      summary: "startOrderCheckout"
       description: "startOrderCheckout"
       tags: [OrdersCheckout]
       requestBody:
