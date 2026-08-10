@@ -1,18 +1,14 @@
-name: Release one API-first artifact
+name: Release API-first artifact or AsyncAPI bundle
 
 on:
   workflow_dispatch:
     inputs:
       artifact:
-        description: Path without extension or artifactId in zenwave-architecture.yml.
+        description: Path without extension or artifactId. asyncapi bundles asyncapi.yml and asyncapi-client.yml together.
         required: true
         type: string
       version:
         description: Release version without a v prefix.
-        required: true
-        type: string
-      nextVersion:
-        description: Next development version, greater than version.
         required: true
         type: string
 
@@ -29,7 +25,6 @@ jobs:
       workflow_ref: main
       artifact: ${{ inputs.artifact }}
       version: ${{ inputs.version }}
-      next_version: ${{ inputs.nextVersion }}
       default_branch: main
       architecture_manifest_uri: https://raw.githubusercontent.com/arcadia-editions/arcadia-editions-architecture/main/zenwave-architecture.yml
       architecture_repository: arcadia-editions/arcadia-editions-architecture
