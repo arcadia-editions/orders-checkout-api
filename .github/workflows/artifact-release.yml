@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       artifact:
-        description: Path without extension or artifactId. asyncapi bundles asyncapi.yml and asyncapi-client.yml together.
+        description: Path without extension or artifactId. asyncapi-all bundles asyncapi.yml and asyncapi-client.yml together.
         required: true
         type: string
       version:
