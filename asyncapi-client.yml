@@ -3,7 +3,7 @@ id: urn:com.arcadiaeditions:orders:checkout:asyncapi:client
 
 info:
   title: Arcadia Editions - Orders Checkout - AsyncAPI Client
-  version: "0.1.0"
+  version: "0.1.1"
   description: Consumed AsyncAPI channels for Arcadia Editions - Orders Checkout.
 
 x-application-bindings:
