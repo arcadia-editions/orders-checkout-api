@@ -47,11 +47,12 @@ config {
 apis {
     asyncapi client PaymentsProcessingApi "https://raw.githubusercontent.com/arcadia-editions/payments-processing-api/main/asyncapi.yml"
     asyncapi client CatalogInventoryApi "https://raw.githubusercontent.com/arcadia-editions/catalog-inventory-api/main/asyncapi.yml"
+    zdl client CatalogInventoryZdl "https://raw.githubusercontent.com/arcadia-editions/catalog-inventory-api/main/domain-model.zdl"
 }
 
 @aggregate
 @lifecycle(field: status, initial: CREATED)
-entity Order {
+entity Order(checkout_order) {
     orderId String required unique
     status OrderStatus required
     items String[] required
@@ -83,10 +84,12 @@ service OrdersCheckoutService for (Order) {
 
     @post
     @transition(to: CREATED)
+    @calls(zdl: CatalogInventoryZdl, command: InventoryService.reserveStock)
     startOrderCheckout(StartOrderCheckoutInput) Order withEvents [OrderCreated | StockUnavailable]
 
     @asyncapi(api: PaymentsProcessingApi, channel: "payment-authorized-event-v1")
     @transition(from: CREATED, to: CONFIRMED)
+    @calls(zdl: CatalogInventoryZdl, command: InventoryService.confirmStockReservation)
     confirmOrder(ConfirmOrderInput) Order withEvents OrderConfirmed
 
     @asyncapi(api: CatalogInventoryApi, channel: "stock-released-event-v1")
