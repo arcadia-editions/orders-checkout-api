@@ -3,7 +3,7 @@ id: urn:com.arcadiaeditions:orders:checkout:asyncapi
 
 info:
   title: Arcadia Editions - Orders Checkout
-  version: "0.1.1"
+  version: 0.0.1
   tags:
   - name: Default
   - name: OrdersCheckout
@@ -12,50 +12,126 @@ servers:
   develop:
     $ref: https://raw.githubusercontent.com/arcadia-editions/api-contract-commons/refs/heads/main/asyncapi-master.yml#/servers/develop
 
-x-application-bindings:
-  x-principal: orders_checkout
-  x-clientId: orders_checkout
-  x-groupId: orders_checkout
 
 defaultContentType: application/json
 
 channels:
   order-created-event-v1:
     address: orders-checkout.order-created.event.avro.v1
+    x-visibility: global
     messages:
       OrderCreatedEvent:
         $ref: "#/components/messages/OrderCreatedEvent"
-    x-traits:
-    - $ref: https://raw.githubusercontent.com/arcadia-editions/api-contract-commons/refs/heads/main/asyncapi-channel-traits.yml#/components/channelTraits/kafkaTopicS
-    - $ref: https://raw.githubusercontent.com/arcadia-editions/api-contract-commons/refs/heads/main/asyncapi-channel-traits.yml#/components/channelTraits/kafkaTopicRetained
-    x-visibility: global
+    bindings:
+      kafka:
+        partitions: 3
+        replicas: 3
+        topicConfiguration:
+          cleanup.policy: [ "delete" ]
+          retention.ms: 604800000
+          retention.bytes: 1000000000
+          delete.retention.ms: 86400000
+          max.message.bytes: 1048588
+        x-env-server-overrides:
+          develop:
+            partitions: 1
+            replicas: 1
+            topicConfiguration:
+              cleanup.policy: [ "delete" ]
+              retention.ms: 604800
+          staging:
+            partitions: 3
+            replicas: 2
+            topicConfiguration:
+              cleanup.policy: [ "delete" ]
+              retention.ms: 604800
   stock-unavailable-event-v1:
     address: orders-checkout.stock-unavailable.event.avro.v1
+    x-visibility: global
     messages:
       StockUnavailableEvent:
         $ref: "#/components/messages/StockUnavailableEvent"
-    x-traits:
-    - $ref: https://raw.githubusercontent.com/arcadia-editions/api-contract-commons/refs/heads/main/asyncapi-channel-traits.yml#/components/channelTraits/kafkaTopicS
-    - $ref: https://raw.githubusercontent.com/arcadia-editions/api-contract-commons/refs/heads/main/asyncapi-channel-traits.yml#/components/channelTraits/kafkaTopicRetained
-    x-visibility: global
+    bindings:
+      kafka:
+        partitions: 3
+        replicas: 3
+        topicConfiguration:
+          cleanup.policy: [ "delete" ]
+          retention.ms: 604800000
+          retention.bytes: 1000000000
+          delete.retention.ms: 86400000
+          max.message.bytes: 1048588
+        x-env-server-overrides:
+          develop:
+            partitions: 1
+            replicas: 1
+            topicConfiguration:
+              cleanup.policy: [ "delete" ]
+              retention.ms: 604800
+          staging:
+            partitions: 3
+            replicas: 2
+            topicConfiguration:
+              cleanup.policy: [ "delete" ]
+              retention.ms: 604800
   order-confirmed-event-v1:
     address: orders-checkout.order-confirmed.event.avro.v1
+    x-visibility: global
     messages:
       OrderConfirmedEvent:
         $ref: "#/components/messages/OrderConfirmedEvent"
-    x-traits:
-    - $ref: https://raw.githubusercontent.com/arcadia-editions/api-contract-commons/refs/heads/main/asyncapi-channel-traits.yml#/components/channelTraits/kafkaTopicS
-    - $ref: https://raw.githubusercontent.com/arcadia-editions/api-contract-commons/refs/heads/main/asyncapi-channel-traits.yml#/components/channelTraits/kafkaTopicRetained
-    x-visibility: global
+    bindings:
+      kafka:
+        partitions: 3
+        replicas: 3
+        topicConfiguration:
+          cleanup.policy: [ "delete" ]
+          retention.ms: 604800000
+          retention.bytes: 1000000000
+          delete.retention.ms: 86400000
+          max.message.bytes: 1048588
+        x-env-server-overrides:
+          develop:
+            partitions: 1
+            replicas: 1
+            topicConfiguration:
+              cleanup.policy: [ "delete" ]
+              retention.ms: 604800
+          staging:
+            partitions: 3
+            replicas: 2
+            topicConfiguration:
+              cleanup.policy: [ "delete" ]
+              retention.ms: 604800
   order-cancelled-event-v1:
     address: orders-checkout.order-cancelled.event.avro.v1
+    x-visibility: global
     messages:
       OrderCancelledEvent:
         $ref: "#/components/messages/OrderCancelledEvent"
-    x-traits:
-    - $ref: https://raw.githubusercontent.com/arcadia-editions/api-contract-commons/refs/heads/main/asyncapi-channel-traits.yml#/components/channelTraits/kafkaTopicS
-    - $ref: https://raw.githubusercontent.com/arcadia-editions/api-contract-commons/refs/heads/main/asyncapi-channel-traits.yml#/components/channelTraits/kafkaTopicRetained
-    x-visibility: global
+    bindings:
+      kafka:
+        partitions: 3
+        replicas: 3
+        topicConfiguration:
+          cleanup.policy: [ "delete" ]
+          retention.ms: 604800000
+          retention.bytes: 1000000000
+          delete.retention.ms: 86400000
+          max.message.bytes: 1048588
+        x-env-server-overrides:
+          develop:
+            partitions: 1
+            replicas: 1
+            topicConfiguration:
+              cleanup.policy: [ "delete" ]
+              retention.ms: 604800
+          staging:
+            partitions: 3
+            replicas: 2
+            topicConfiguration:
+              cleanup.policy: [ "delete" ]
+              retention.ms: 604800
 
 operations:
   onOrderCreated:
@@ -99,6 +175,7 @@ components:
       summary: ""
       traits:
       - $ref: "#/components/messageTraits/CommonHeaders"
+      - $ref: "#/components/messageTraits/KafkaSchemaCompatibility"
       payload:
         schemaFormat: application/vnd.apache.avro+json;version=1.9.0
         schema:
@@ -109,6 +186,7 @@ components:
       summary: ""
       traits:
       - $ref: "#/components/messageTraits/CommonHeaders"
+      - $ref: "#/components/messageTraits/KafkaSchemaCompatibility"
       payload:
         schemaFormat: application/vnd.apache.avro+json;version=1.9.0
         schema:
@@ -119,6 +197,7 @@ components:
       summary: ""
       traits:
       - $ref: "#/components/messageTraits/CommonHeaders"
+      - $ref: "#/components/messageTraits/KafkaSchemaCompatibility"
       payload:
         schemaFormat: application/vnd.apache.avro+json;version=1.9.0
         schema:
@@ -129,18 +208,27 @@ components:
       summary: ""
       traits:
       - $ref: "#/components/messageTraits/CommonHeaders"
+      - $ref: "#/components/messageTraits/KafkaSchemaCompatibility"
       payload:
         schemaFormat: application/vnd.apache.avro+json;version=1.9.0
         schema:
           $ref: avro/OrderCancelled.avsc
+
   messageTraits:
     CommonHeaders:
       $ref: https://raw.githubusercontent.com/arcadia-editions/api-contract-commons/refs/heads/main/asyncapi-message-traits.yml#/components/messageTraits/CommonHeaders
+    KafkaSchemaCompatibility:
+      bindings:
+        kafka:
+          bindingVersion: '0.5.0'
+          schemaIdLocation: 'payload'
+          schemaLookupStrategy: 'TopicNameStrategy'
+          x-compatibility: 'FORWARD'
+
   operationTraits:
     clientIdAndPrincipal:
       bindings:
         kafka:
-          x-principal:
-            $ref: "#/x-application-bindings/x-principal"
-          x-groupId:
-            $ref: "#/x-application-bindings/x-groupId"
+          clientId: { const: orders_checkout}
+          groupId: { const: orders_checkout}
+          x-principal: orders_checkout

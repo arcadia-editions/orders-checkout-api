@@ -6,11 +6,6 @@ info:
   version: "0.1.1"
   description: Consumed AsyncAPI channels for Arcadia Editions - Orders Checkout.
 
-x-application-bindings:
-  x-principal: orders_checkout
-  x-clientId: orders_checkout
-  x-groupId: orders_checkout
-
 channels:
   payment-authorized-event-v1:
     $ref: https://raw.githubusercontent.com/arcadia-editions/payments-processing-api/main/asyncapi.yml#/channels/payment-authorized-event-v1
@@ -39,7 +34,6 @@ components:
     clientIdAndPrincipal:
       bindings:
         kafka:
-          x-principal:
-            $ref: "#/x-application-bindings/x-principal"
-          x-groupId:
-            $ref: "#/x-application-bindings/x-groupId"
+          clientId: { const: orders_checkout}
+          groupId: { const: orders_checkout}
+          x-principal: orders_checkout
