@@ -28,6 +28,7 @@ paths:
     post:
       operationId: startOrderCheckout
       description: "startOrderCheckout"
+      summary: "startOrderCheckout"
       tags: [OrdersCheckout]
       requestBody:
         required: true
@@ -46,6 +47,7 @@ paths:
     get:
       operationId: getOrder
       description: "getOrder"
+      summary: "getOrder"
       tags: [OrdersCheckout]
       parameters:
         - name: "id"
