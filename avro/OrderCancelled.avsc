@@ -9,6 +9,17 @@
     "name" : "version",
     "type" : [ "null", "int" ]
   }, {
+    "name" : "customerId",
+    "type" : [ "null", "string" ]
+  }, {
+    "name" : "customerEmail",
+    "type" : [ "null", "string" ],
+    "doc" : ""
+  }, {
+    "name" : "reason",
+    "type" : [ "null", "string" ],
+    "doc" : "Order.cancellationReason"
+  }, {
     "name" : "cancelledAt",
     "type" : [ "null", "string" ]
   } ]

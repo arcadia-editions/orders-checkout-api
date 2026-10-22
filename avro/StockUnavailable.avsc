@@ -3,10 +3,20 @@
   "name" : "StockUnavailable",
   "namespace" : "com.arcadiaeditions.orders.checkout.events.avro",
   "fields" : [ {
-    "name" : "productId",
+    "name" : "orderId",
     "type" : [ "null", "string" ]
   }, {
-    "name" : "requestedQuantity",
-    "type" : [ "null", "int" ]
+    "name" : "customerId",
+    "type" : [ "null", "string" ]
+  }, {
+    "name" : "customerEmail",
+    "type" : [ "null", "string" ]
+  }, {
+    "name" : "unavailableItems",
+    "type" : {
+      "type" : "array",
+      "items" : "StockUnavailableItem",
+      "java-class" : "java.util.List"
+    }
   } ]
 }

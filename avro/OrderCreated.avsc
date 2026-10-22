@@ -8,5 +8,22 @@
   }, {
     "name" : "version",
     "type" : [ "null", "int" ]
+  }, {
+    "name" : "customerId",
+    "type" : [ "null", "string" ]
+  }, {
+    "name" : "customerEmail",
+    "type" : [ "null", "string" ]
+  }, {
+    "name" : "paymentMethodId",
+    "type" : [ "null", "string" ],
+    "doc" : ""
+  }, {
+    "name" : "amount",
+    "type" : [ "null", "double" ],
+    "doc" : "Order total (Order.totalAmount), named to match AuthorizePaymentInput."
+  }, {
+    "name" : "currency",
+    "type" : [ "null", "string" ]
   } ]
 }

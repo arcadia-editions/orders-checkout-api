@@ -18,7 +18,6 @@ defaultContentType: application/json
 channels:
   order-created-event-v1:
     address: orders-checkout.order-created.event.avro.v1
-    x-visibility: global
     messages:
       OrderCreatedEvent:
         $ref: "#/components/messages/OrderCreatedEvent"
@@ -47,7 +46,6 @@ channels:
               retention.ms: 604800
   stock-unavailable-event-v1:
     address: orders-checkout.stock-unavailable.event.avro.v1
-    x-visibility: global
     messages:
       StockUnavailableEvent:
         $ref: "#/components/messages/StockUnavailableEvent"
@@ -76,7 +74,6 @@ channels:
               retention.ms: 604800
   order-confirmed-event-v1:
     address: orders-checkout.order-confirmed.event.avro.v1
-    x-visibility: global
     messages:
       OrderConfirmedEvent:
         $ref: "#/components/messages/OrderConfirmedEvent"
@@ -105,7 +102,6 @@ channels:
               retention.ms: 604800
   order-cancelled-event-v1:
     address: orders-checkout.order-cancelled.event.avro.v1
-    x-visibility: global
     messages:
       OrderCancelledEvent:
         $ref: "#/components/messages/OrderCancelledEvent"

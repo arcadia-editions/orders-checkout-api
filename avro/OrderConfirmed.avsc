@@ -9,7 +9,20 @@
     "name" : "version",
     "type" : [ "null", "int" ]
   }, {
+    "name" : "customerId",
+    "type" : [ "null", "string" ]
+  }, {
     "name" : "confirmedAt",
     "type" : [ "null", "string" ]
+  }, {
+    "name" : "items",
+    "type" : {
+      "type" : "array",
+      "items" : "OrderConfirmedItem",
+      "java-class" : "java.util.List"
+    }
+  }, {
+    "name" : "shippingAddress",
+    "type" : "OrderConfirmedShippingAddress"
   } ]
 }

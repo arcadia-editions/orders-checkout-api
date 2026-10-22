@@ -1,0 +1,12 @@
+{
+  "type" : "record",
+  "name" : "OrderConfirmedItem",
+  "namespace" : "com.arcadiaeditions.orders.checkout.events.avro",
+  "fields" : [ {
+    "name" : "sku",
+    "type" : [ "null", "string" ]
+  }, {
+    "name" : "quantity",
+    "type" : [ "null", "int" ]
+  } ]
+}
