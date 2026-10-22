@@ -61,5 +61,5 @@ components:
       bindings:
         kafka:
           clientId: { const: orders_checkout}
-          x-groupId: orders_checkout
+          groupId: { const: orders_checkout}
           x-principal: orders_checkout
