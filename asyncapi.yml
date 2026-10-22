@@ -38,7 +38,7 @@ channels:
             replicas: 1
             topicConfiguration:
               cleanup.policy: [ "delete" ]
-              retention.ms: 60480000
+              retention.ms: 6048000000
           staging:
             partitions: 3
             replicas: 2
