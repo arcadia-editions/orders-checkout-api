@@ -38,7 +38,7 @@ channels:
             replicas: 1
             topicConfiguration:
               cleanup.policy: [ "delete" ]
-              retention.ms: 604800
+              retention.ms: 60480000
           staging:
             partitions: 3
             replicas: 2
@@ -223,7 +223,7 @@ components:
           bindingVersion: '0.5.0'
           schemaIdLocation: 'payload'
           schemaLookupStrategy: 'TopicNameStrategy'
-          x-compatibility: 'FORWARD'
+          x-schemaCompatibility: 'FORWARD'
 
   operationTraits:
     clientIdAndPrincipal:
