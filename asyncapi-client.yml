@@ -13,7 +13,7 @@ channels:
     $ref: https://raw.githubusercontent.com/arcadia-editions/catalog-inventory-api/main/asyncapi.yml#/channels/stock-released-event-v1
 
 operations:
-  onPaymentAuthorizedEventV1:
+  onPaymentAuthorizedEvent:
     action: receive
     channel:
       $ref: "#/channels/payment-authorized-event-v1"
@@ -32,7 +32,7 @@ operations:
             $ref: https://raw.githubusercontent.com/arcadia-editions/api-contract-commons/refs/heads/main/asyncapi-error-topics.yml#/components/error-topics/retry/silver
           dlq:
             $ref: https://raw.githubusercontent.com/arcadia-editions/api-contract-commons/refs/heads/main/asyncapi-error-topics.yml#/components/error-topics/dlq/compliance
-  onStockReleasedEventV1:
+  onStockReleasedEvent:
     action: receive
     channel:
       $ref: "#/channels/stock-released-event-v1"
