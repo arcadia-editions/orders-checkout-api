@@ -5,9 +5,12 @@ info:
   description: "Arcadia Editions - Orders Checkout"
   contact:
     email: email@domain.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
 servers:
-  - description: localhost
-    url: http://localhost:8080/api
+  - description: API
+    url: /api
   - description: custom
     url: "{protocol}://{server}/{path}"
     variables:
@@ -20,7 +23,9 @@ servers:
         default: 'api'
 tags:
   - name: "Default"
+    description: "Operations that are not assigned to a service."
   - name: "OrdersCheckout"
+    description: "Start checkout and read an order."
 
 
 paths:
@@ -43,6 +48,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Order"
+        "400":
+          description: "Invalid request"
   /orders/{id}:
     get:
       operationId: getOrder
@@ -63,6 +70,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Order"
+        "400":
+          description: "Invalid request"
 
 components:
   schemas:
