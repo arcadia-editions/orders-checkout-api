@@ -1,0 +1,20 @@
+{
+  "type" : "record",
+  "name" : "OrderConfirmationRejected",
+  "namespace" : "com.arcadiaeditions.orders.checkout.events.avro",
+  "fields" : [ {
+    "name" : "orderId",
+    "type" : [ "null", "string" ]
+  }, {
+    "name" : "customerId",
+    "type" : [ "null", "string" ],
+    "doc" : ""
+  }, {
+    "name" : "reason",
+    "type" : [ "null", "string" ],
+    "doc" : "ORDER_CANCELLED or STOCK_NOT_HELD"
+  }, {
+    "name" : "rejectedAt",
+    "type" : [ "null", "string" ]
+  } ]
+}

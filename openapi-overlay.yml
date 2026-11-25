@@ -1,0 +1,51 @@
+overlay: 1.1.0
+info:
+  title: Orders Checkout OpenAPI responses
+  version: 1.0.0
+  description: >
+    Applied by ZDLToOpenAPIPlugin (openapiOverlayFiles) after the shared api-contract-commons overlay, on top of the
+    OpenAPI generated from domain-model.zdl: the 409 of startOrderCheckout, which the ZDL cannot express. The Order is
+    persisted only on OrderCreated; StockUnavailable answers 409 and persists nothing.
+
+actions:
+  - target: "$.paths['/orders/start-checkout'].post.responses"
+    description: Stock unavailable, no Order persisted.
+    update:
+      "409":
+        description: "Stock unavailable; no Order persisted"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StockUnavailable"
+
+  - target: "$.components.schemas"
+    description: Body of the 409 of startOrderCheckout.
+    update:
+      StockUnavailable:
+        type: "object"
+        x-business-entity: "StockUnavailable"
+        required:
+          - "orderId"
+          - "unavailableItems"
+        properties:
+          orderId:
+            type: "string"
+          unavailableItems:
+            type: "array"
+            minItems: 1
+            items:
+              $ref: "#/components/schemas/StockUnavailableItem"
+      StockUnavailableItem:
+        type: "object"
+        x-business-entity: "StockUnavailableItem"
+        required:
+          - "sku"
+        properties:
+          sku:
+            type: "string"
+          requestedQuantity:
+            type: "integer"
+            format: "int32"
+          availableQuantity:
+            type: "integer"
+            format: "int32"

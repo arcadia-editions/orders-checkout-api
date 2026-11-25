@@ -1,9 +1,0 @@
-{
-  "type" : "record",
-  "name" : "CancelOrderInput",
-  "namespace" : "com.arcadiaeditions.orders.checkout.events.avro",
-  "fields" : [ {
-    "name" : "orderId",
-    "type" : "string"
-  } ]
-}
